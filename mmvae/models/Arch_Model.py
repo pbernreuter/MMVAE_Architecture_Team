@@ -4,37 +4,34 @@ import mmvae.models.utils as utils
 import mmvae.models as M
 
 class VAE(nn.Module):
-    def __init__(self):
+    def __init__(self, neuron_sizes) :
         super(VAE, self).__init__()
         #Encoder
         self.encoder = nn.Sequential(
-            nn.Linear(60664, 4096),
+            nn.Linear(60664, neuron_sizes[0]),
             nn.ReLU(),
-            nn.BatchNorm1d(4096, 0.8),
-            nn.Linear(4096, 1200),
+            nn.BatchNorm1d(neuron_sizes[0], 0.8),
+            nn.Linear(neuron_sizes[0], neuron_sizes[1]),
             nn.ReLU(),
-            nn.BatchNorm1d(1200, 0.8),
-            nn.Linear(1200, 400),
+            nn.BatchNorm1d(neuron_sizes[1], 0.8),
+            nn.Linear(neuron_sizes[1], neuron_sizes[2]),
             nn.ReLU(),
-            nn.BatchNorm1d(400, 0.8)
+            nn.BatchNorm1d(neuron_sizes[2], 0.8)
         )
-        
-        self.fc_mu = nn.Linear(400, 128)
-        self.fc_var = nn.Linear(400, 128)
-        
-        # Decoder
+        self.fc_mu = nn.Linear(neuron_sizes[2], 128)
+        self.fc_var = nn.Linear(neuron_sizes[2], 128)
         self.decoder = nn.Sequential(
-            nn.Linear(128, 400),
+            nn.Linear(128, neuron_sizes[2]),
             nn.ReLU(),
-            nn.BatchNorm1d(400, 0.8),
-            nn.Linear(400, 1200),
+            nn.BatchNorm1d(neuron_sizes[2], 0.8),
+            nn.Linear(neuron_sizes[2], neuron_sizes[1]),
             nn.ReLU(),
-            nn.BatchNorm1d(1200, 0.8),
-            nn.Linear(1200, 4096),
+            nn.BatchNorm1d(neuron_sizes[1], 0.8),
+            nn.Linear(neuron_sizes[1], neuron_sizes[0]),
             nn.ReLU(),
-            nn.BatchNorm1d(4096, 0.8),
-            nn.Linear(4096, 60664),
-            nn.Sigmoid(),
+            nn.BatchNorm1d(neuron_sizes[0], 0.8),
+            nn.Linear(neuron_sizes[0], 60664),
+            nn.ReLU(),
         )
 
         utils._submodules_init_weights_xavier_uniform_(self.encoder)

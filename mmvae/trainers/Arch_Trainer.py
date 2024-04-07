@@ -8,9 +8,9 @@ from mmvae.data import configure_singlechunk_dataloaders
 
 class VAETrainer:
 
-    def __init__(self, device, model=Arch_Model.VAE(), batch_size=256, learning_rate=0.00001, num_epochs=20, start_kl=0.0, end_kl=0.15, annealing_start=3, annealing_steps=17):
+    def __init__(self, device, sizes, model=Arch_Model.VAE(), batch_size=256, learning_rate=0.00001, num_epochs=20, start_kl=0.0, end_kl=0.15, annealing_start=3, annealing_steps=17):
         #Configure
-        self.model = model.to(device)
+        self.model = model(sizes).to(device)
         self.device = device
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
         #Hyperparameters
@@ -25,7 +25,8 @@ class VAETrainer:
         self.writer = tb.SummaryWriter()
         #Load Data
         self.train_loader = configure_singlechunk_dataloaders(
-            data_file_path='/active/debruinz_project/CellCensus_3M_Full/3m_human_full.npz',
+            #data_file_path='/active/debruinz_project/CellCensus_3M_Full/3m_human_full.npz',
+            data_file_path='/active/debruinz_project/CellCensus_3M/3m_human_chunk_10.npz',
             metadata_file_path=None,
             train_ratio=1,
             batch_size=self.batch_size,
@@ -39,7 +40,7 @@ class VAETrainer:
         kl_divergence = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / self.batch_size
         return reconstruction_loss, kl_divergence
 
-    def train(self):
+    def train(self, sizes):
         print("Start Training ....")
         for epoch in range(self.num_epochs):
             for i, (x, _) in enumerate(self.train_loader):
