@@ -40,7 +40,7 @@ class VAETrainer:
         kl_divergence = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / self.batch_size
         return reconstruction_loss, kl_divergence
 
-    def train(self, sizes):
+    def train(self):
         print("Start Training ....")
         for epoch in range(self.num_epochs):
             for i, (x, _) in enumerate(self.train_loader):
