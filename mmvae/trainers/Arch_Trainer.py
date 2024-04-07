@@ -26,8 +26,8 @@ class VAETrainer:
         self.writer = tb.SummaryWriter()
         #Load Data
         self.train_loader = configure_singlechunk_dataloaders(
-            #data_file_path='/active/debruinz_project/CellCensus_3M_Full/3m_human_full.npz',
-            data_file_path='/active/debruinz_project/CellCensus_3M/3m_human_chunk_10.npz',
+            data_file_path='/active/debruinz_project/CellCensus_3M_Full/3m_human_full.npz',
+            # data_file_path='/active/debruinz_project/CellCensus_3M/3m_human_chunk_10.npz',
             metadata_file_path=None,
             train_ratio=1,
             batch_size=self.batch_size,
