@@ -4,8 +4,9 @@ import mmvae.models.utils as utils
 import mmvae.models as M
 
 class VAE(nn.Module):
-    def __init__(self, neuron_sizes) :
+    def __init__(self, neuron_sizes, name) :
         super(VAE, self).__init__()
+        print(f'In model init name: {name}, size: {neuron_sizes}')
         #Encoder
         self.encoder = nn.Sequential(
             nn.Linear(60664, neuron_sizes[0]),
