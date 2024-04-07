@@ -10,7 +10,7 @@ class VAETrainer:
 
     def __init__(self, device, sizes, batch_size=256, learning_rate=0.00001, num_epochs=20, start_kl=0.0, end_kl=0.15, annealing_start=3, annealing_steps=17):
         #Configure
-        self.model = model(sizes).to(device)
+        self.model = Arch_Model.VAE(sizes).to(device)
         self.device = device
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
         #Hyperparameters
