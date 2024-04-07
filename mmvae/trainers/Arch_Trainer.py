@@ -8,7 +8,7 @@ from mmvae.data import configure_singlechunk_dataloaders
 
 class VAETrainer:
 
-    def __init__(self, device, sizes, model=Arch_Model.VAE(), batch_size=256, learning_rate=0.00001, num_epochs=20, start_kl=0.0, end_kl=0.15, annealing_start=3, annealing_steps=17):
+    def __init__(self, device, sizes, batch_size=256, learning_rate=0.00001, num_epochs=20, start_kl=0.0, end_kl=0.15, annealing_start=3, annealing_steps=17):
         #Configure
         self.model = model(sizes).to(device)
         self.device = device
